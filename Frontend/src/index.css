@@ -2,8 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .btn {
-    @apply appearance-auto border-2 rounded-lg border-black bg-cyan-500 hover:bg-cyan-600 p-1 m-2;
+@layer base {
+  @font-face {
+    font-family: 'Poppins-Black';
+    src: url(../public/fonts/Poppins-Black.ttf);
+  }
+  @font-face {
+    font-family: 'Poppins-Medium';
+    src: url(../public/fonts/Poppins-Medium.ttf);
   }
 }
+

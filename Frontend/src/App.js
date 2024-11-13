@@ -6,7 +6,7 @@ import Register from "./pages/register";
 import Chat from "./pages/chat";
 
 const App = () => {
-		return <Home />;
-}
+	return <Home />;
+};
 
 export default App;
