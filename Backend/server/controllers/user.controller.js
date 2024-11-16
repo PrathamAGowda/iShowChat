@@ -1,4 +1,4 @@
-const User = require("../models/users");
+const User = require("../models/user.model");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncError = require("../middleware/catchAsyncError");
@@ -67,5 +67,4 @@ const userLogin = catchAsyncError(async (req, res, next) => {
 	}
 });
 
-module.exports = userRegistration;
-module.exports = userLogin;
+module.exports = { userRegistration, userLogin };

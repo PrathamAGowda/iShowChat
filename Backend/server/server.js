@@ -8,7 +8,13 @@ const PORT = 8000;
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
-app.use("/", api);
+app.use("/api", api);
+
+app.all("*", (req, res, next) => {
+	const err = new Error(`Route ${req.originalUrl} not found`);
+	err.statusCode = 404;
+	next(err);
+});
 
 //create server
 app.listen(PORT, () => {

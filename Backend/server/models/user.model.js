@@ -25,6 +25,12 @@ const userSchema = new Schema({
 		minlength: [6, "Password must be at least 6 characters"],
 		select: false,
 	},
+	groups: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Chat",
+		},
+	],
 });
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model("User", userSchema);

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const dbUrl = "mongodb://localhost/users";
+const dbUrl = "mongodb://localhost/iShowChat";
 
 const connectDB = async () => {
 	try {
