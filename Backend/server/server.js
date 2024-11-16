@@ -1,7 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const connectDB = require("./utils/db");
 const cors = require("cors");
-const api = require("./routes/api");
+const api = require("./routes/user.route");
 
 const PORT = 8000;
 const app = express();
@@ -12,4 +13,5 @@ app.use("/", api);
 //create server
 app.listen(PORT, () => {
 	console.log(`Connected to PORT ${PORT}`);
+	connectDB();
 });
