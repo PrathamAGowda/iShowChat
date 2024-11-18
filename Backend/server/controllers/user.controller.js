@@ -45,19 +45,20 @@ const userRegistration = catchAsyncError(async (req, res, next) => {
 const userLogin = catchAsyncError(async (req, res, next) => {
 	try {
 		const { username, password } = req.body;
-
+		console.log(username);
 		const user = await User.findOne({ username }).select("+password");
 
 		if (!user) {
 			return next(new ErrorHandler("Invalid username or password", 400));
 		}
 
-		const fetchPassword = await User.findOne({ username }, "password");
-
-		const verified = fetchPassword["password"] == password;
+		const verified = user.password === password;
 		if (!verified) {
 			return next(new ErrorHandler("Invalid username or password", 400));
 		}
+		await User.findOneAndUpdate({ username }, { isLoggedIn: true });
+		const loggedUser = await User.findOne({ username });
+
 		res.json({
 			message: "User Verified",
 			status: true,
@@ -67,4 +68,18 @@ const userLogin = catchAsyncError(async (req, res, next) => {
 	}
 });
 
-module.exports = { userRegistration, userLogin };
+const userLogout = catchAsyncError(async (req, res, next) => {
+	try {
+		const { username } = req.user;
+		await User.findOneAndUpdate({ username }, { isLoggedIn: false });
+
+		res.json({
+			message: "User Logged Out Successfully",
+			status: true,
+		});
+	} catch (error) {
+		return next(new ErrorHandler(error.message, 400));
+	}
+});
+
+module.exports = { userRegistration, userLogin, userLogout };
