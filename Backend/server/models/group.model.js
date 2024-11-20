@@ -3,13 +3,11 @@ const { Schema } = mongoose;
 
 const chatSchema = new Schema(
 	{
-		groupName: String,
-		description: String,
-		chatType: {
+		groupName: {
 			type: String,
-			enum: ["DM", "group"],
 			required: true,
 		},
+		description: String,
 		members: [
 			{
 				type: Schema.Types.ObjectId,
@@ -28,5 +26,28 @@ const chatSchema = new Schema(
 		timestamps: true,
 	}
 );
+
+chatSchema.methods.getGroupDetails = async function () {
+	try {
+		await this.populate({
+			path: "members",
+			select: "username avatar -_id",
+			populate: {
+				path: "avatar",
+				select: "image",
+			},
+		});
+
+		const memberList = this.members.map((member) => ({
+			...member.toObject(),
+			avatar: member.avatar ? member.avatar.image : null,
+		}));
+
+		return memberList;
+	} catch (error) {
+		console.error("Error Retrieving Group Details!", error);
+		throw error;
+	}
+};
 
 module.exports = mongoose.model("Chat", chatSchema);

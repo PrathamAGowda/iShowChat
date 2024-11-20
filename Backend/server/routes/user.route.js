@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const isAutheticated = require("../middleware/auth");
+const isAuthenticated = require("../middleware/auth");
 const multer = require("multer");
 const storage = multer.memoryStorage();
 const upload = multer({
@@ -14,15 +14,14 @@ const {
 	updateUserProfile,
 	updatePassword,
 	updateAvatar,
+	findGroups,
 } = require("../controllers/user.controller");
-const catchAsyncError = require("../middleware/catchAsyncError");
-const ErrorHandler = require("../utils/ErrorHandler");
 
 router.get("/", (req, res) => {
 	res.send("From user router");
 });
 
-// User Registration:
+router.post("/register", userRegistration);
 /* JSON
 {
 "username": String,
@@ -30,52 +29,50 @@ router.get("/", (req, res) => {
 "dob": String (YYYY-MM-DD),
 "password": String
 } */
-router.post("/register", userRegistration);
 
-//User Login:
+router.post("/login", userLogin);
 /*JSON
 {
 "username": String,
 "password": String
 }*/
-router.post("/login", userLogin);
 
-//User Logout:
+router.get("/logout", isAuthenticated, userLogout);
 /* Headers
 {username: "username"}*/
-router.get("/logout", isAutheticated, userLogout);
 
-//Get User Details:
-router.get("/profile", isAutheticated, getUserProfile);
+//Fetch user details
+router.get("/profile", isAuthenticated, getUserProfile);
 
-//Update Details:
+router.post("/update-details", isAuthenticated, updateUserProfile);
 /* JSON
 {
 "username": String,
 "email": String,
 "dob": String (YYYY-MM-DD)
 }*/
-router.post("/update-details", isAutheticated, updateUserProfile);
 
-//Update Password:
+router.post("/update-password", isAuthenticated, updatePassword);
 /* JSON
 {
 "username": String,
 "password": String
 }*/
-router.post("/update-password", isAutheticated, updatePassword);
 
-//Update Avatar:
+router.post(
+	"/update-avatar",
+	isAuthenticated,
+	upload.single("avatar"),
+	updateAvatar
+);
 /* JSON
 {
 "username": String,
 "avatar": Image File (.png or .jpeg; <5MB)
 }*/
-router.post(
-	"/update-avatar",
-	isAutheticated,
-	upload.single("avatar"),
-	updateAvatar
-);
+
+router.get("/find-groups", isAuthenticated, findGroups);
+/* QUERY PARAM
+...?group=groupName */
 
 module.exports = router;

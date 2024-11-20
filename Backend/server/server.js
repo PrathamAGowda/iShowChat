@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/api/user", user);
-app.use("/api/group", group);
+app.use("/api", group);
 
 app.all("*", (req, res, next) => {
 	const err = new Error(`Route ${req.originalUrl} not found`);

@@ -29,15 +29,14 @@ const userRegistration = catchAsyncError(async (req, res, next) => {
 		user.save()
 			.then((result) => {
 				res.json({
-					message: "User Registered!",
 					status: true,
 					send: userData,
 				});
 			})
 			.catch((error) => {
 				res.json({
-					message: `User Registration Failed! ${error}`,
 					status: false,
+					message: `User Registration Failed! ${error}`,
 				});
 			});
 	} catch (error) {
@@ -61,8 +60,8 @@ const userLogin = catchAsyncError(async (req, res, next) => {
 		await User.findOneAndUpdate({ username }, { isLoggedIn: true });
 
 		res.json({
-			message: "User Verified",
 			status: true,
+			message: "User Verified",
 		});
 	} catch (error) {
 		return next(new ErrorHandler(error.message, 400));
@@ -75,8 +74,8 @@ const userLogout = catchAsyncError(async (req, res, next) => {
 		await User.findOneAndUpdate({ username }, { isLoggedIn: false });
 
 		res.json({
-			message: "User Logged Out Successfully",
 			status: true,
+			message: "User Logged Out Successfully",
 		});
 	} catch (error) {
 		return next(new ErrorHandler(error.message, 400));
@@ -89,12 +88,11 @@ const getUserProfile = catchAsyncError(async (req, res, next) => {
 		const user = await User.findOne({ username });
 
 		res.json({
-			message: "Data Retrieved Successfully",
+			status: true,
 			username: user.username,
 			email: user.email,
 			dob: user.dob,
 			avatar: user.avatar,
-			status: true,
 		});
 	} catch (error) {
 		return next(new ErrorHandler(error.message, 400));
@@ -110,8 +108,8 @@ const updateUserProfile = catchAsyncError(async (req, res, next) => {
 		);
 
 		res.json({
-			message: "User Details Updated Succesfully",
 			status: true,
+			message: "User Details Updated Succesfully",
 		});
 	} catch (error) {
 		return next(new ErrorHandler(error.message, 400));
@@ -126,8 +124,8 @@ const updatePassword = catchAsyncError(async (req, res, next) => {
 		await User.findOneAndUpdate({ username }, { password: password });
 
 		res.json({
-			message: "User Password Updated Succesfully",
 			status: true,
+			message: "User Password Updated Succesfully",
 		});
 	} catch (error) {
 		return next(new ErrorHandler(error.message, 400));
@@ -167,8 +165,24 @@ const updateAvatar = catchAsyncError(async (req, res, next) => {
 		await User.findOneAndUpdate({ username }, { avatar: avatar._id });
 
 		res.json({
-			message: "Avatar Updated Successfully",
 			status: true,
+			message: "Avatar Updated Successfully",
+		});
+	} catch (error) {
+		return next(new ErrorHandler(error.message, 400));
+	}
+});
+
+const findGroups = catchAsyncError(async (req, res, next) => {
+	try {
+		const { username } = req.user;
+		const query = req.query.group;
+		const user = await User.findOne({ username });
+		const groupList = await user.findGroupsByName(query);
+
+		res.json({
+			status: true,
+			groups: groupList,
 		});
 	} catch (error) {
 		return next(new ErrorHandler(error.message, 400));
@@ -183,4 +197,5 @@ module.exports = {
 	updateUserProfile,
 	updatePassword,
 	updateAvatar,
+	findGroups,
 };

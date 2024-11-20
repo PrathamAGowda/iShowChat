@@ -1,42 +1,55 @@
 const express = require("express");
 const router = express.Router();
-const isAutheticated = require("../middleware/auth");
+const isAuthenticated = require("../middleware/auth");
 const multer = require("multer");
-const { createGroup } = require("../controllers/group.controller");
+const {
+	createGroup,
+	updateAvatar,
+	findUser,
+	addMembers,
+	getGroupDetails,
+} = require("../controllers/group.controller");
 const storage = multer.memoryStorage();
 const upload = multer({
 	storage: storage,
 });
 
-router.get("/", (req, res) => {
-	res.send("From group router");
+router.get("/:group", (req, res) => {
+	res.send(`From ${req.params["group"]}`);
 });
 
-//Create Group:
+router.post("/create-group", isAuthenticated, createGroup);
 /* JSON
 {
 "groupName": String,
-"chatType": "DM" / "group",
 "description": String
 } */
-router.post("/create-group", isAutheticated, createGroup);
 
-// router.post("/add-members", isAutheticated, addm);
+router.get("/find-user", isAuthenticated, findUser);
+/* QUERY PARAM
+...?username=username */
 
-// //Update Avatar:
-// /* JSON
-// {
-// "groupName": String,
-// "avatar": Image File (.png or .jpeg; <5MB)
-// }*/
-// router.post(
-// 	"/update-avatar",
-// 	isAutheticated,
-// 	upload.single("avatar"),
-// 	updateAvatar
-// );
-// /update-avatar
-// /group-details
+router.post("/:group/add-members", isAuthenticated, addMembers);
+/* JSON
+{
+"members: [...userIds]"
+} */
+
+router.post(
+	"/:group/update-avatar",
+	isAuthenticated,
+	upload.single("avatar"),
+	updateAvatar
+);
+/* JSON
+{
+"groupName": String,
+"avatar": Image File (.png or .jpeg; <5MB)
+}*/
+
+router.get("/:group/group-details", isAuthenticated, getGroupDetails);
+
+// If time:
 // /remove-members
 // /update-details (name, description)
 // /exit-group
