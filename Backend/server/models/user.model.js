@@ -25,13 +25,22 @@ const userSchema = new Schema({
 		minlength: [6, "Password must be at least 6 characters"],
 		select: false,
 	},
+	avatar: {
+		type: Schema.Types.ObjectId,
+		ref: "Image",
+	},
 	isLoggedIn: { type: Boolean, default: false },
 	groups: [
 		{
-			type: mongoose.Schema.Types.ObjectId,
+			type: Schema.Types.ObjectId,
 			ref: "Chat",
 		},
 	],
+});
+
+userSchema.pre("save", async function (next) {
+	this.avatar == null ? (this.avatar = "673ca498fbe0b1209bbbda9b") : null;
+	next();
 });
 
 module.exports = mongoose.model("User", userSchema);

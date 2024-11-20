@@ -3,14 +3,8 @@ const { Schema } = mongoose;
 
 const auraSchema = new Schema(
 	{
-		chatId: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "Chat",
-			required: true,
-			index: true,
-		},
 		sender: {
-			type: mongoose.Schema.Types.ObjectId,
+			type: Schema.Types.ObjectId,
 			ref: "User",
 			required: true,
 			index: true,
@@ -22,7 +16,7 @@ const auraSchema = new Schema(
 		lifeCycle: {
 			type: Date,
 			default: Date.now,
-			expires: 60 * 60 * 24 * 7,
+			expires: 60 * 60 * 24 * 7, // 7 days
 			index: true,
 		},
 	},

@@ -6,10 +6,9 @@ const catchAsyncError = require("./catchAsyncError");
 // authenticated user
 const isAutheticated = catchAsyncError(async (req, res, next) => {
 	const username = req.headers["username"];
-	console.log({ username });
 	const user = await User.findOne({ username });
 	if (!user || user.isLoggedIn === false) {
-		return next(new ErrorHandler("Please Login!", 400));
+		return next(new ErrorHandler("Not Logged In!", 400));
 	}
 
 	req.user = user;

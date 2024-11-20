@@ -3,20 +3,22 @@ const { Schema } = mongoose;
 
 const chatSchema = new Schema(
 	{
+		groupName: String,
+		description: String,
 		chatType: {
 			type: String,
 			enum: ["DM", "group"],
 			required: true,
 		},
-		participants: [
+		members: [
 			{
-				type: mongoose.Schema.Types.ObjectId,
+				type: Schema.Types.ObjectId,
 				ref: "User",
 			},
 		],
-		groupName: String,
+		groupAvatar: { type: Schema.Types.ObjectId, ref: "Image" },
 		lastMessage: {
-			type: mongoose.Schema.Types.ObjectId,
+			type: Schema.Types.ObjectId,
 			ref: "Message",
 		},
 		isActive: {

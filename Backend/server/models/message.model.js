@@ -4,13 +4,13 @@ const { Schema } = mongoose;
 const messageSchema = new Schema(
 	{
 		chatId: {
-			type: mongoose.Schema.Types.ObjectId,
+			type: Schema.Types.ObjectId,
 			ref: "Chat",
 			required: true,
 			index: true,
 		},
 		sender: {
-			type: mongoose.Schema.Types.ObjectId,
+			type: Schema.Types.ObjectId,
 			ref: "User",
 			required: true,
 		},
@@ -29,4 +29,4 @@ const messageSchema = new Schema(
 	}
 );
 
-module.exports = mongoose.model("Message", messageSchema);
+module.exports = model("Message", messageSchema);
