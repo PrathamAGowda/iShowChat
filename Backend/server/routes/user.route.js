@@ -27,7 +27,7 @@ router.get("/", (req, res) => {
 {
 "username": String,
 "email": String,
-"dob": Date String (YYYY-MM-DD),
+"dob": String (YYYY-MM-DD),
 "password": String
 } */
 router.post("/register", userRegistration);
@@ -53,7 +53,7 @@ router.get("/profile", isAutheticated, getUserProfile);
 {
 "username": String,
 "email": String,
-"dob": Date String (YYYY-MM-DD)
+"dob": String (YYYY-MM-DD)
 }*/
 router.post("/update-details", isAutheticated, updateUserProfile);
 

@@ -60,7 +60,6 @@ const userLogin = catchAsyncError(async (req, res, next) => {
 		}
 		await User.findOneAndUpdate({ username }, { isLoggedIn: true });
 
-		console.log(user._id, user.avatar);
 		res.json({
 			message: "User Verified",
 			status: true,
@@ -155,16 +154,17 @@ const updateAvatar = catchAsyncError(async (req, res, next) => {
 				new ErrorHandler("Image Size Too Large! (Max Size <5MB)", 400)
 			);
 		}
+		const user = await User.findOne({ username });
+		if (user.avatar.toString() !== "673ca498fbe0b1209bbbda9b") {
+			await Image.deleteOne({ _id: user.avatar });
+		}
 
 		const base64Image = req.file.buffer.toString("base64");
 		const avatar = await Image.create({
 			name: req.file.originalname,
 			image: base64Image,
 		});
-		const user = await User.findOneAndUpdate(
-			{ username },
-			{ avatar: avatar._id }
-		);
+		await User.findOneAndUpdate({ username }, { avatar: avatar._id });
 
 		res.json({
 			message: "Avatar Updated Successfully",

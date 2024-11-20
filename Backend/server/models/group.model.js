@@ -16,15 +16,13 @@ const chatSchema = new Schema(
 				ref: "User",
 			},
 		],
-		groupAvatar: { type: Schema.Types.ObjectId, ref: "Image" },
-		lastMessage: {
-			type: Schema.Types.ObjectId,
-			ref: "Message",
-		},
-		isActive: {
-			type: Boolean,
-			default: false,
-		},
+		avatar: { type: Schema.Types.ObjectId, ref: "Image" },
+		messages: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: "Message",
+			},
+		],
 	},
 	{
 		timestamps: true,
