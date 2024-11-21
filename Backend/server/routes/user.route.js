@@ -37,9 +37,8 @@ router.post("/login", userLogin);
 "password": String
 }*/
 
+//User Logout
 router.get("/logout", isAuthenticated, userLogout);
-/* Headers
-{username: "username"}*/
 
 //Fetch user details
 router.get("/profile", isAuthenticated, getUserProfile);
@@ -55,7 +54,6 @@ router.post("/update-details", isAuthenticated, updateUserProfile);
 router.post("/update-password", isAuthenticated, updatePassword);
 /* JSON
 {
-"username": String,
 "password": String
 }*/
 
@@ -67,7 +65,6 @@ router.post(
 );
 /* JSON
 {
-"username": String,
 "avatar": Image File (.png or .jpeg; <5MB)
 }*/
 

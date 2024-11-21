@@ -85,14 +85,19 @@ const userLogout = catchAsyncError(async (req, res, next) => {
 const getUserProfile = catchAsyncError(async (req, res, next) => {
 	try {
 		const { username } = req.user;
-		const user = await User.findOne({ username });
-
+		const user = await User.findOne({ username }).populate({
+			path: "groups",
+			select: "groupName avatar -_id",
+			populate: { path: "avatar", select: "image -_id" },
+		});
+		console.log(user.groups);
 		res.json({
 			status: true,
 			username: user.username,
 			email: user.email,
 			dob: user.dob,
 			avatar: user.avatar,
+			groupList: user.groups,
 		});
 	} catch (error) {
 		return next(new ErrorHandler(error.message, 400));

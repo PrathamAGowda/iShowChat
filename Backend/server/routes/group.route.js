@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const isAuthenticated = require("../middleware/auth");
 const multer = require("multer");
+const storage = multer.memoryStorage();
+const upload = multer({
+	storage: storage,
+});
 const {
 	createGroup,
 	updateAvatar,
@@ -9,10 +13,6 @@ const {
 	addMembers,
 	getGroupDetails,
 } = require("../controllers/group.controller");
-const storage = multer.memoryStorage();
-const upload = multer({
-	storage: storage,
-});
 
 router.get("/:group", (req, res) => {
 	res.send(`From ${req.params["group"]}`);
@@ -47,9 +47,9 @@ router.post(
 "avatar": Image File (.png or .jpeg; <5MB)
 }*/
 
+//Fetch group details
 router.get("/:group/group-details", isAuthenticated, getGroupDetails);
 
-// If time:
 // /remove-members
 // /update-details (name, description)
 // /exit-group
