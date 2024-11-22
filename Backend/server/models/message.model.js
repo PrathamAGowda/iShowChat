@@ -3,12 +3,6 @@ const { Schema } = mongoose;
 
 const messageSchema = new Schema(
 	{
-		chatId: {
-			type: Schema.Types.ObjectId,
-			ref: "Chat",
-			required: true,
-			index: true,
-		},
 		sender: {
 			type: Schema.Types.ObjectId,
 			ref: "User",
@@ -16,6 +10,11 @@ const messageSchema = new Schema(
 		},
 		content: {
 			type: String,
+			required: true,
+		},
+		group: {
+			type: Schema.Types.ObjectId,
+			ref: "Chat",
 			required: true,
 		},
 		createdAt: {
@@ -29,4 +28,4 @@ const messageSchema = new Schema(
 	}
 );
 
-module.exports = model("Message", messageSchema);
+module.exports = mongoose.model("Message", messageSchema);

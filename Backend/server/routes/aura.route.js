@@ -1,2 +1,0 @@
-// /reset-aura
-// /get-ranking

@@ -6,6 +6,7 @@ const chatSchema = new Schema(
 		groupName: {
 			type: String,
 			required: true,
+			unique: true,
 		},
 		description: String,
 		members: [

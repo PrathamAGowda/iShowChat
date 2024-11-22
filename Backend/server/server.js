@@ -2,9 +2,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const connectDB = require("./utils/db");
 const cors = require("cors");
+const SocketServer = require("./utils/socketServer");
 const user = require("./routes/user.route");
 const group = require("./routes/group.route");
 const ErrorMiddleware = require("./middleware/error");
+
 const PORT = 8000;
 const app = express();
 
@@ -21,8 +23,9 @@ app.all("*", (req, res, next) => {
 
 app.use(ErrorMiddleware);
 
-//create server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
 	console.log(`Connected to PORT ${PORT}`);
 	connectDB();
 });
+
+new SocketServer(server);
