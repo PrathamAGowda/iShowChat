@@ -112,6 +112,10 @@ class SocketServer {
 				}
 			});
 
+			socket.on("leave", (groupName) => {
+				socket.leave(groupName);
+			});
+
 			socket.on("disconnect", () => {
 				console.log(`User ${socket.user.username} disconnected`);
 			});
