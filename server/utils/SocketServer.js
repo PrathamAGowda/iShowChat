@@ -37,6 +37,7 @@ class SocketServer {
 
 			socket.on("join", (groupName) => {
 				socket.join(groupName);
+				console.log(`${socket.user.username} joined ${groupName}`);
 			});
 
 			socket.on("send-message", async (messageData) => {

@@ -55,7 +55,6 @@ const findUser = catchAsyncError(async (req, res, next) => {
 		const user = await User.findOne({ username })
 			.select("username avatar")
 			.populate("avatar", "image -_id");
-		console.log(user);
 		if (user) {
 			res.json({
 				status: true,

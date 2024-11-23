@@ -1,7 +1,7 @@
 const { io } = require("socket.io-client");
 
 async function connectGroup(username, groupName) {
-	const socket = io("http://localhost:4000", {
+	const socket = io("http://localhost:8000", {
 		auth: {
 			username: username,
 		},
@@ -11,13 +11,13 @@ async function connectGroup(username, groupName) {
 		console.log(`${username} Successfully Connected`);
 		socket.emit("join", groupName);
 
-        socket.emit("load-messages", groupName);
+		socket.emit("load-messages", groupName);
 
 		console.log("Previous messages retrieved:");
 		socket.on("previous-messages", (messages) => {
 			console.log(messages);
 		});
-		
+
 		socket.on("new-message", async (message) => {
 			try {
 				console.log(
@@ -43,28 +43,28 @@ async function connectGroup(username, groupName) {
 }
 
 const sendMessage = async (username, groupName, message) => {
-    const socket = io("http://localhost:4000", {
+	const socket = io("http://localhost:8000", {
 		auth: {
 			username: username,
 		},
 	});
 
 	socket.on("connect", () => {
-    try {
-        socket.emit("send-message", {
-            groupName: groupName,
-            content: message,
-        });
-    
-        console.log("Message send test initiated");
-    } catch (error) {
-        console.error("Message send test failed:", error);
-    }
-})
-}
+		try {
+			socket.emit("send-message", {
+				groupName: groupName,
+				content: message,
+			});
+
+			console.log("Message send test initiated");
+		} catch (error) {
+			console.error("Message send test failed:", error);
+		}
+	});
+};
 
 const loadMessage = async () => {
-	const socket = io("http://localhost:4000", {
+	const socket = io("http://localhost:8000", {
 		auth: {
 			username: username,
 		},
@@ -74,21 +74,19 @@ const loadMessage = async () => {
 		console.log(`${username} Successfully Connected`);
 		socket.emit("join", groupName);
 
-        socket.emit("load-messages", groupName);
+		socket.emit("load-messages", groupName);
 
 		console.log("Previous messages retrieved:");
 		socket.on("previous-messages", (messages) => {
 			console.log(messages);
 		});
-	})
-}
+	});
+};
 
-const disconnectGroup = async () => {
-	
-}
+const disconnectGroup = async () => {};
 
 module.exports = {
-    connectGroup,
-    sendMessage,
-	loadMessage
+	connectGroup,
+	sendMessage,
+	loadMessage,
 };

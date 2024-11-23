@@ -25,7 +25,6 @@ const userRegistration = catchAsyncError(async (req, res, next) => {
 		const userData = req.body;
 		let user = new User(userData);
 		user._id = new mongoose.Types.ObjectId();
-		console.log(user);
 		user.save()
 			.then((result) => {
 				res.json({
@@ -90,7 +89,6 @@ const getUserProfile = catchAsyncError(async (req, res, next) => {
 			select: "groupName avatar -_id",
 			populate: { path: "avatar", select: "image -_id" },
 		});
-		console.log(user.groups);
 		res.json({
 			status: true,
 			username: user.username,
