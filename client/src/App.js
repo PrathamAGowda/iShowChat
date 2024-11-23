@@ -6,11 +6,13 @@ import RegisterPage from "./Pages/RegisterPage";
 import ProfilePage from "./Pages/ProfilePage";
 import CreateGroupPage from "./Pages/CreateGroupPage";
 import GroupDetailsPage from "./Pages/GroupDetailsPage";
+import HomePage from "./Pages/HomePage";
 
 const App = () => {
 	return (
 		<Router>
 			<Routes>
+				<Route path="/" element={<HomePage />} />
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/register" element={<RegisterPage />} />
 				<Route path="/chat" element={<ChatPage />} />
