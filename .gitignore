@@ -2,7 +2,7 @@
 
 # dependencies
 Frontend/node_modules
-Backend/server/node_modules
+server/node_modules
 Frontend/.pnp
 Frontend/.pnp.js
 
@@ -13,7 +13,7 @@ Frontend/coverage
 Frontend/build
 
 # misc
-Backend/server/.env
+server/.env
 Frontend/.DS_Store
 Frontend/.env.local
 Frontend/.env.development.local

@@ -1,15 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@layer base {
-  @font-face {
-    font-family: 'Poppins-Black';
-    src: url(../public/fonts/Poppins-Black.ttf);
-  }
-  @font-face {
-    font-family: 'Poppins-Medium';
-    src: url(../public/fonts/Poppins-Medium.ttf);
-  }
-}
-
