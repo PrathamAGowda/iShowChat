@@ -176,6 +176,30 @@ const updateAvatar = catchAsyncError(async (req, res, next) => {
 	}
 });
 
+const findUser = catchAsyncError(async (req, res, next) => {
+	try {
+		const username = req.query.username;
+		const user = await User.findOne({ username })
+			.select("username avatar")
+			.populate("avatar", "image -_id");
+		if (user) {
+			res.json({
+				status: true,
+				username: user.username,
+				avatar: user.avatar.image,
+				id: user._id,
+			});
+		} else {
+			res.json({
+				status: false,
+				message: "User Not Found!",
+			});
+		}
+	} catch (error) {
+		return next(new ErrorHandler(error.message, 400));
+	}
+});
+
 const findGroups = catchAsyncError(async (req, res, next) => {
 	try {
 		const { username } = req.user;
@@ -200,5 +224,6 @@ module.exports = {
 	updateUserProfile,
 	updatePassword,
 	updateAvatar,
+	findUser,
 	findGroups,
 };

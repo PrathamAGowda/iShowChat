@@ -14,6 +14,7 @@ const {
 	updateUserProfile,
 	updatePassword,
 	updateAvatar,
+	findUser,
 	findGroups,
 } = require("../controllers/user.controller");
 
@@ -67,6 +68,10 @@ router.post(
 {
 "avatar": Image File (.png or .jpeg; <5MB)
 }*/
+
+router.get("/find-user", isAuthenticated, findUser);
+/* QUERY PARAM
+...?username=username */
 
 router.get("/find-groups", isAuthenticated, findGroups);
 /* QUERY PARAM

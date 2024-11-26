@@ -33,11 +33,11 @@ class SocketServer {
 		});
 
 		this.io.on("connection", (socket) => {
-			console.log(`User ${socket.user.username} connected`);
+			// console.log(`User ${socket.user.username} connected`);
 
 			socket.on("join", (groupName) => {
 				socket.join(groupName);
-				console.log(`${socket.user.username} joined ${groupName}`);
+				// console.log(`${socket.user.username} joined ${groupName}`);
 			});
 
 			socket.on("send-message", async (messageData) => {
@@ -118,7 +118,7 @@ class SocketServer {
 			});
 
 			socket.on("disconnect", () => {
-				console.log(`User ${socket.user.username} disconnected`);
+				// console.log(`User ${socket.user.username} disconnected`);
 			});
 		});
 	}
