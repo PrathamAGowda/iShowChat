@@ -5,8 +5,10 @@ import api from "../API/api";
 
 const GroupDetailsPage = () => {
 	const [showAddMembers, setShowAddMembers] = useState(false);
-	const [newMemberUsernames, setNewMemberUsernames] = useState("");
+	const [currentMemberList, setCurrentMemberList] = useState([]);
+	const [newMemberUsername, setnewMemberUsername] = useState("");
 	const [selectedNewMembers, setSelectedNewMembers] = useState([]);
+	const [selectedMemberIds, setSelectedMemberIds] = useState([]);
 
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -19,7 +21,7 @@ const GroupDetailsPage = () => {
 				const res = await api.get(`/${groupName}/group-details`, {
 					headers: { username: username },
 				});
-				console.log(res.data.description);
+				setCurrentMemberList([...res.data.members]);
 				setDesc(res.data.description);
 			} catch (e) {
 				console.log(e);
@@ -27,19 +29,62 @@ const GroupDetailsPage = () => {
 		};
 
 		init();
-	});
+	}, []);
 
-	const addToList = () => {
-		if (newMemberUsernames !== "") {
-			setSelectedNewMembers([...selectedNewMembers, newMemberUsernames]);
-			setNewMemberUsernames("");
-		} else {
-			alert("Error in adding user");
+	const addToList = async () => {
+		{
+			try {
+				const res = await api.get(
+					`/user/find-user?username=${newMemberUsername}`,
+					{
+						headers: { username: username },
+					}
+				);
+				console.log(currentMemberList);
+				for (const member of currentMemberList) {
+					if (
+						res.data.username === member ||
+						res.data.username === member.username
+					) {
+						alert("User already exists in group!");
+						return;
+					}
+				}
+				if (res.data.status) {
+					setSelectedNewMembers([
+						...selectedNewMembers,
+						res.data.username,
+					]);
+					setCurrentMemberList([
+						...currentMemberList,
+						res.data.username,
+					]);
+					setSelectedMemberIds([...selectedMemberIds, res.data.id]);
+					setnewMemberUsername("");
+				} else {
+					alert("Could not find User!");
+				}
+			} catch (error) {
+				alert("Could not find User!");
+			}
 		}
 	};
 
-	const addMembers = () => {
-		if (selectedNewMembers != []) {
+	const addMembers = async () => {
+		try {
+			await api.post(
+				`/${groupName}/add-members`,
+				{
+					members: [...selectedMemberIds],
+				},
+				{
+					headers: { username: username },
+				}
+			);
+			setSelectedNewMembers([]);
+			alert("User(s) added to group!");
+		} catch (error) {
+			alert("User could not be Added!");
 		}
 	};
 
@@ -102,9 +147,9 @@ const GroupDetailsPage = () => {
 										<input
 											type="text"
 											placeholder="Enter username"
-											value={newMemberUsernames}
+											value={newMemberUsername}
 											onChange={(e) =>
-												setNewMemberUsernames(
+												setnewMemberUsername(
 													e.target.value
 												)
 											}

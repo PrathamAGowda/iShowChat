@@ -25,10 +25,6 @@ router.post("/create-group", isAuthenticated, createGroup);
 "description": String
 } */
 
-router.get("/find-user", isAuthenticated, findUser);
-/* QUERY PARAM
-...?username=username */
-
 router.post("/:group/add-members", isAuthenticated, addMembers);
 /* JSON
 {
